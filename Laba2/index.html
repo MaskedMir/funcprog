@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Матрица Эйзенхауэра</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <label for="theme-toggle"></label>
+        </div>
+
+        <div class="data-controls">
+            <button class="btn" onclick="exportData()">Экспорт данных</button>
+            <input type="file" id="importFile" accept=".json" style="display: none" onchange="importData(event)">
+            <button class="btn" onclick="document.getElementById('importFile').click()">Импорт данных</button>
+            <button class="btn" onclick="cleanupTasks()">Очистить проблемные задачи</button>
+            <button class="btn" onclick="resetAllTasks()">Сбросить все</button>
+        </div>
+
+        <div class="form-group">
+            <label for="taskInput">Задача:</label>
+            <input type="text" id="taskInput" placeholder="Введите задачу">
+        </div>
+
+        <div class="form-group">
+            <label for="deadlineInput">Дедлайн:</label>
+            <input type="date" id="deadlineInput">
+        </div>
+
+        <div class="form-group">
+            <label for="quadrantInput">Квадрант:</label>
+            <select id="quadrantInput">
+                <option value="urgent-important">Срочно и важно</option>
+                <option value="not-urgent-important">Важно, но не срочно</option>
+                <option value="urgent-not-important">Срочно, но не важно</option>
+                <option value="not-urgent-not-important">Не срочно и не важно</option>
+            </select>
+        </div>
+
+        <div id="formMessage"></div>
+
+        <button class="btn add-task" onclick="addTask()">Добавить задачу</button>
+
+        <div class="matrix">
+            <div class="quadrant urgent-important" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h2>Срочно и важно</h2>
+                <div id="urgent-important" class="task-list"></div>
+            </div>
+
+            <div class="quadrant not-urgent-important" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h2>Важно, но не срочно</h2>
+                <div id="not-urgent-important" class="task-list"></div>
+            </div>
+
+            <div class="quadrant urgent-not-important" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h2>Срочно, но не важно</h2>
+                <div id="urgent-not-important" class="task-list"></div>
+            </div>
+
+            <div class="quadrant not-urgent-not-important" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h2>Не срочно и не важно</h2>
+                <div id="not-urgent-not-important" class="task-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h2>Редактировать задачу</h2>
+            <div class="form-group">
+                <label for="editTaskInput">Задача:</label>
+                <input type="text" id="editTaskInput">
+            </div>
+            <div class="form-group">
+                <label for="editDeadlineInput">Дедлайн:</label>
+                <input type="date" id="editDeadlineInput">
+            </div>
+            <div class="form-group">
+                <label for="editQuadrantInput">Квадрант:</label>
+                <select id="editQuadrantInput">
+                    <option value="urgent-important">Срочно и важно</option>
+                    <option value="not-urgent-important">Важно, но не срочно</option>
+                    <option value="urgent-not-important">Срочно, но не важно</option>
+                    <option value="not-urgent-not-important">Не срочно и не важно</option>
+                </select>
+            </div>
+            <button class="btn save-edit" onclick="saveEdit()">Сохранить изменения</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
